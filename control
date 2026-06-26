@@ -1,0 +1,9 @@
+Package: com.den.igoledtheme
+Name: IGOledTheme
+Version: 1.0
+Architecture: iphoneos-arm
+Description: OLED Theme for Instagram
+Maintainer: DeNsor
+Author: DeNsor
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
