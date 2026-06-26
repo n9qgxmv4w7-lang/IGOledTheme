@@ -1,6 +1,6 @@
 ARCHS = arm64 arm64e
 INSTALL_TARGET_PROCESSES = Instagram
-export THEOS=/Users/kaanarslan/theos/
+export THEOS=/Users/.../theos/
 
 TARGET := iphone:clang:latest:16.0
 THEOS_PACKAGE_SCHEME=rootless
