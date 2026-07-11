@@ -1,4 +1,4 @@
-import <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 #import <substrate.h>
 
 // --------------------------------------
@@ -22,11 +22,9 @@ static BOOL shouldSkip(NSString *cls) {
         [cls isEqualToString:@"IGStoryMusicLyricsSticker"])
         return YES;
 
-    // alerts — remove this block if you want alerts to go pink
     if ([cls containsString:@"IGDSAlertDialogView"])
         return YES;
 
-    // message bubbles in DMs — remove this block if you want chat bubbles to go pink
     if ([cls isEqualToString:@"IGDirectMessageBubbleView"] ||
         [cls isEqualToString:@"IGDirectReshareMessageFooterView"])
         return YES;
@@ -34,7 +32,6 @@ static BOOL shouldSkip(NSString *cls) {
     return NO;
 }
 
-// DEFINING GLOBAL PINK COLOR (Bubblegum / Hot Pink)
 UIColor *pinkColor = [UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:1.0];
 
 %hook UIView
@@ -50,7 +47,6 @@ UIColor *pinkColor = [UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:1.0];
     CGFloat w = 0;
     [color getWhite:&w alpha:NULL];
 
-    // If the original UI element was dark/black, overwrite it with Pink instead
     if (w < 0.3) {
         %orig([UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:a]);
         return;
@@ -68,10 +64,9 @@ UIColor *pinkColor = [UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:1.0];
     UIColor *bg = self.backgroundColor;
     if (!bg) return;
 
-    ** w = 0, a = 0;
+    CGFloat w = 0, a = 0;
     [bg getWhite:&w alpha:&a];
 
-    // Overwrite layout dark background views with Pink
     if (w < 0.3)
         self.backgroundColor = [UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:a];
 }
@@ -104,7 +99,6 @@ UIColor *pinkColor = [UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:1.0];
 }
 %end
 
-// FIXING CUSTOM KEYBOARD COLOR (Now outputs Pink instead of forcing Black)
 %hook UIKBBackdropView
 - (void)setBackgroundColor:(UIColor *)color {
     UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ? %orig(pinkColor) : %orig(color);
@@ -127,7 +121,6 @@ UIColor *pinkColor = [UIColor colorWithRed:1.00 green:0.41 blue:0.71 alpha:1.0];
 }
 %end
 
-// FIXING LIQUID GLASS TAB BAR COLOR (Now Pink background blur)
 %hook IGLiquidGlassTabBarButtonContainerView
 -(void)layoutSubviews{
     %orig;
