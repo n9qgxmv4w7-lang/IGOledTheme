@@ -1,0 +1,28 @@
+name: Build Pink Tweak
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Theos Env and SDK
+        run: |
+          bash -c "$(curl -fsSL https://githubusercontent.com)"
+          echo "THEOS=/Users/runner/theos" >> $GITHUB_ENV
+          cd /Users/runner/theos && git clone --depth 1 https://github.com sdks
+
+      - name: Compile Pink Tweak Binary
+        run: |
+          export THEOS=/Users/runner/theos
+          make package FINALPACKAGE=1
+          
+      - name: Upload Pink Binary Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PinkTheme-Tweak-Output
+          path: packages/*
